@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 
 
 class ResPartner(models.Model):
-    _inheri = 'res.partner'
+    _inherit = 'res.partner'
     
     
     partner_sequence = fields.Char(string="Partner ID", default="/", readonly=True, help="Sequence of the parnter")

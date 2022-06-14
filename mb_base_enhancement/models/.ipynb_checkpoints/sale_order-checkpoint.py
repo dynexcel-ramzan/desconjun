@@ -11,5 +11,7 @@ class SaleOrder(models.Model):
             ('hiking', 'Hiking'),
             ('traveling', 'Traveling'),
             ('workout', 'Workout'),
+            ('cycling', 'Cycling'),
+            ('reading', 'Reading'),
         ], string='Hobbies', tracking=True,
-        default='hiking')
+        )
