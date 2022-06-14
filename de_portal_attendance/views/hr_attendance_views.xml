@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    
+      <record id="hr_attendance_form_validity" model="ir.ui.view">
+            <field name="name">hr.attendance.form.validity</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='check_in']" position="after">
+                      <field name="in_date"   optional='hide' />
+                      <field name="out_type_validity"   optional='hide' />
+                      <field name="in_validity"  optional='hide' />
+                </xpath>
+                <xpath expr="//field[@name='check_out']"  position="after">
+                       <field name="is_portal_modify"   invisible='1' />
+                       <field name="modify_type"   invisible='1'  />
+                       <field name="out_date"   optional='hide' />
+                       <field name="in_type_validity"   optional='hide' />
+                       <field name="out_validity"  optional='hide' />
+                </xpath>
+            </field>
+        </record> 
+    
+
+</odoo>
+
+
+

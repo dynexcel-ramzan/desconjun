@@ -1,0 +1,156 @@
+<odoo>
+    
+   <template id="eobi_report">
+    <t t-call="web.html_container">
+    <t t-call="web.external_layout">
+        <t t-set="company" t-value="docs.company_id"/> 
+        <div class="page">
+            <div class="oe_structure"/>
+            <div  style="position:relative;align:center;">
+               <h3>Employee's Old Age Benefits Institution</h3> <br/>
+               <h5>Government of Pakistan, Ministry of Labour, Manpower &amp; Overseas Pakistanis (Labour Division).</h5>
+            </div>
+            <div  style="margin-left: 800px; max-width: 250px;height: 20px;">
+               <strong>Printed On:</strong>
+               <span  t-esc="datetime.datetime.strptime(str(datetime.datetime.now()+ relativedelta(hours =+ 5)), '%Y-%m-%d %H:%M:%S.%f').strftime('%d-%b-%y %H:%M %p')"/>
+                <strong>Printed By:</strong>
+               <span  t-esc="user.name"/>
+            </div>
+            <div  style="position: relative; max-width: 400px;">
+               <strong>E.O.B.I Contribution Detail</strong> <br/>
+            </div>
+            
+            
+            <br/>
+            <table class="table table-sm table-striped table-bordered">
+		
+                <thead>
+                    <tr>
+                        <th>Sr No.</th>
+                        <th>EOBI Registration No.</th>
+                        <th>CNIC No.</th>
+                        <th>Name of Insured Person</th>
+                        <th>Father/Husband Name</th>
+                        <th>Gender</th>
+                        <th>Date of Birth</th>
+                        <th>EOBI Reg. Date</th>
+                        <th>Date of Exit</th>
+                        <th>Payable Days</th>
+                        <th>EOBI Amount</th>
+                        <th>
+                            Contributions
+                            <table>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Employer</th>
+                                </tr>
+                            </table>
+                        </th>
+                        <th>Total Cont.</th>
+                    </tr>
+                </thead>
+                       
+                <tbody class="eobi_tbody">
+                    <t t-set='sr_no' t-value='0' />
+                    <t t-set="total_con_employee" t-value="0"/>
+                    <t t-set="total_con_employer" t-value="0"/>
+                    <t t-set="amount_a" t-value="0"/>
+                    <t t-set="amount_b" t-value="0"/>
+                    <t t-set="total_amount" t-value="0"/>
+                    <t t-set="sum_total_amount" t-value="0"/>
+                    <t t-foreach="eobi_list" t-as="eobi">
+                            <t t-set='sr_no' t-value='sr_no + 1' />
+                            <tr>
+                                <td> 
+                                    <span t-esc='sr_no'/> 
+                                </td>
+                                <td><span t-esc="eobi.employee_id.eobi_number"/> </td>
+                                <td><span t-esc="eobi.employee_id.cnic"/> </td>
+                                <td><span t-esc="eobi.employee_id.name"/> </td>
+                                <td><span t-esc='eobi.employee_id.father_name'/> </td>
+                                <td><span t-esc="eobi.employee_id.gender"/> </td>
+                                <td><span t-esc="eobi.employee_id.birthday"/> </td>
+                                <td><span t-esc="eobi.employee_id.eobi_registration_date"/> </td>
+                                <td><span t-esc="eobi.employee_id.resigned_date"/> </td>
+                                <td><span t-esc='eobi.net_work_days'/> </td>
+                                <td><span t-esc='sr_no'/> </td>
+                                <td>
+                                 <table class="table table-sm table-striped table-bordered">
+                                     <tr>
+                                         <td>
+                                         <t t-set= "amount" t-value="0" ></t> 
+                                         <span t-foreach="eobi.line_ids" t-as="line">
+                                             <span t-if="line.code=='EOB01'"><t t-set= "amount" t-value="line.amount" /></span>
+                                         </span>
+                                             <span t-esc="round(amount)"/>
+                                             <t t-set="total_con_employee" t-value="total_con_employee + amount"/>
+                                             <t t-set="amount_a" t-value="amount"/>
+                                         </td>
+                                         
+                                         <td>
+                                         <t t-set= "amount" t-value="0" ></t> 
+                                         <span t-foreach="eobi.line_ids" t-as="line">
+                                             <span t-if="line.code=='EOB02'"><t t-set= "amount" t-value="line.amount" /></span>
+                                         </span>
+                                             <span t-esc="round(amount)"/>
+                                             <t t-set="total_con_employer" t-value="total_con_employer + amount"/>
+                                             <t t-set="amount_b" t-value="amount"/>
+                                         </td>
+                                     </tr>
+                                </table>
+                                </td>
+                               
+                                <td>
+                                    <t t-set="total_amount" t-value="amount_a + amount_b"/>
+                                    <span t-esc="round(total_amount)"/>
+                                    <t t-set="sum_total_amount" t-value="sum_total_amount + total_amount"/>
+                                </td>
+                               
+                            </tr>
+                    </t>
+                    <t>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <span>Total</span>
+                            </td>
+                            <td>
+                                 <table class="table table-sm table-striped table-bordered">
+                                     <tr>
+                                    
+                             <td>
+                                <span t-esc="round(total_con_employee)"/>
+                            </td>
+                            <td>
+                                <span t-esc="round(total_con_employer)"/>
+                            </td>
+                                     </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <span t-esc="round(sum_total_amount)"/>
+                            </td>
+                            
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            
+            <br/>
+            <br/>  
+        </div>
+    </t>
+    </t>
+</template>
+    
+    
+</odoo>

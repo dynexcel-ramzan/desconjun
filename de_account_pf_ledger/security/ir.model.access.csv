@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partner_pf_ledger,access.partner.pf.ledger,model_partner_pf_ledger,,1,1,1,1
+access_pf_ledger_wizard,access.pf.ledger.wizard,model_pf_ledger_wizard,,1,1,1,1
+access_pf_ledger_type,access.pf.ledger.type,model_pf_ledger_type,,1,1,1,1,

@@ -1,0 +1,166 @@
+<odoo>
+  <data>
+      
+      <record id="hr_expense_sheet_form_view_ora_category" model="ir.ui.view">
+        <field name="name">hr.expense.sheet.form.view.ora.category</field>
+        <field name="model">hr.expense.sheet</field>
+        <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_document_verify"  string="Document Received" type="object" class="oe_highlight" attrs="{'invisible': ['|',('state', 'not in', ['submit', 'approve']),('document_received', '=',True)]}" groups='account.group_account_invoice' />
+                <button name="action_deposit"  string="Deposit" type="object" class="oe_highlight" attrs="{'invisible': ['|','|', ('state', '!=', 'done'),('is_deposit', '=',True),('is_deposit_adjusted', '=',True)]}" groups='de_portal_expence.group_payment_register_voucher' />
+            </xpath>  
+            <xpath expr="//header//button[@name='action_register_payment']" position="replace">
+                <button name="action_register_payment" type="object" class="oe_highlight o_expense_sheet_pay" 
+                    attrs="{'invisible': [('state', '!=', 'post')]}" context="{'dont_redirect_to_payments': True}" string="Register Payment" groups="account.group_account_invoice"/>
+            </xpath>  
+            
+            <xpath expr="//group[@name='employee_details']" position="after">
+                <group name='extra_details'>
+                   <field name="ora_category_id" />
+                   <field name="document_received" invisible='1'/>
+                   <field name="is_deposit" invisible='1'/>
+                   <field name="is_deposit_sign" invisible='1'/> 
+                   <field name="is_deposit_adjusted" invisible='1'/> 
+                   <field name="exception"/>
+                   <field name="employee_number"/> 
+                   <field name="department_id"/> 
+                </group>    
+            </xpath>
+            <xpath expr="//field[@name='expense_line_ids']//tree//field[@name='name']" position="after">
+                <field name="project_id" optional="show" />
+            </xpath>    
+            <xpath expr="//notebook//page[@name='expenses']" position="before">
+                <page string='Expense Lines' invisible='1'>
+                <field name="expense_sheet_line_ids" nolabel="1" widget="many2many" >
+                            <tree decoration-danger="is_refused" editable="bottom">
+                                <field name="date" optional="show"/>
+                                <field name="name"/>
+                                <field name="project_id" optional="show" />
+                                <field name="state" invisible="1"/>
+                                <field name="medical_paid" invisible="1"/>
+                                <field name="previous_reading" invisible="1"/>
+                                <field name="reference" optional="hide"/>
+                                <field name="analytic_account_id" optional="show" domain="['|', ('company_id', '=', parent.company_id), ('company_id', '=', False)]" groups="analytic.group_analytic_accounting"/>
+                                <field name="analytic_tag_ids" optional="hide" widget="many2many_tags" groups="analytic.group_analytic_tags"/>
+                                <field name="account_id" optional="hide"/>
+                                <field name="attachment_number" string=" "/>
+                                <button name="action_get_attachment_view" string="View Attachments" type="object" icon="fa-paperclip"/>
+                                <field name="unit_amount" optional="hide" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="currency_id" optional="hide"/>
+                                <field name="quantity" optional="hide"/>
+                                <field name="sub_category_id" optional="hide"/>
+                                <field name="company_id" invisible="1"/>
+                                <field name="total_amount" optional="show"/>
+                                <field name='meter_reading'   optional='hide'/>
+                                <field name='fleet_id'    optional='hide'/>
+                                <field name="company_currency_id" invisible="1"/>
+                                <field name="total_amount_company" optional="show" groups="base.group_multi_currency"/>
+                                <field name="is_refused" invisible="True"/>
+                           </tree>
+                        </field>
+                    
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="expense_total">
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_amount"/>
+                                </div>
+                                <field name="total_amount" nolabel="1" class="oe_subtotal_footer_separator"/>
+                                <field name="amount_residual" class="oe_subtotal_footer_separator" attrs="{'invisible': [('state', 'not in', ('post', 'done'))]}"/>
+                            </group>
+                 </page>
+            </xpath>    
+            <xpath expr="//field[@name='company_id']" position="after">
+                   <field name="grade"/>
+                   <field name="reason"  invisible='1' />
+            </xpath>
+            <xpath expr="//field[@name='payment_mode']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+
+        </field>
+    </record>
+      
+     
+      
+    <menuitem id="menu_hr_expense_ora_expenses" name="Expenses" sequence="1" parent="account_accountant.menu_accounting"   />
+      
+    <record id="action_hr_expense_account_paid" model="ir.actions.act_window">
+            <field name="name">Expenses Payments</field>
+            <field name="res_model">hr.expense.sheet</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph</field>
+            <field name="domain">[('state' ,'=', 'post')]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new expense report
+              </p><p>
+                Once you have created your expense, submit it to your manager who will validate it.
+              </p>
+            </field>
+    </record>
+      
+      
+     <record id="action_view_account_change_lock_date_ora" model="ir.actions.act_window">
+            <field name="name">Lock your Fiscal Period</field>
+            <field name="res_model">account.change.lock.date</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="menu_action_change_lock_date_ora"
+            name="Lock Dates"
+            action="action_view_account_change_lock_date_ora"
+            parent="menu_hr_expense_ora_expenses"
+            sequence="55"
+            groups='de_portal_expence.group_payment_register_lock'
+                  />
+      
+      
+      
+    <record id="action_hr_expense_ora_payments" model="ir.actions.act_window">
+            <field name="name">Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_mode">tree,kanban,form,graph</field>
+            <field name="context">{
+                'default_payment_type': 'outbound',
+                'default_partner_type': 'supplier',
+                'search_default_outbound_filter': 1,
+                'default_move_journal_types': ('bank', 'cash'),
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                  Register a payment
+                </p><p>
+                  Payments are used to register liquidity movements. You can process those payments by your own means or by using installed facilities.
+                </p>
+            </field>
+        </record>
+      
+      <menuitem id="menu_hr_expense_ora_payments" name="Payments" sequence="2" parent="menu_hr_expense_ora_expenses" groups='de_portal_expence.group_payment_register_paid'  action="action_hr_expense_ora_payments"/>
+      
+      <menuitem id="menu_hr_expense_account_emp_expenses_paid" name="Expenses" sequence="23" parent="menu_hr_expense_ora_expenses" groups='de_portal_expence.group_payment_register_paid'  action="action_hr_expense_account_paid"/>  
+      
+      
+    <record id="action_hr_expense_account_validation" model="ir.actions.act_window">
+            <field name="name">Expenses Validation</field>
+            <field name="res_model">hr.expense.sheet</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph</field>
+            <field name="domain">['|',('state' ,'=', 'submit'),('state' ,'=', 'approve')]</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new expense report
+              </p><p>
+                Once you have created your expense, submit it to your manager who will validate it.
+              </p>
+            </field>
+    </record>
+      
+      
+    <menuitem id="menu_hr_expense_account_emp_expenses_validation" name="Validation" sequence="22" parent="menu_hr_expense_ora_expenses" groups='de_portal_expence.group_payment_register_validation'  action="action_hr_expense_account_validation"/>
+      
+      
+   
+  </data>
+</odoo>

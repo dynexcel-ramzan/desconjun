@@ -1,0 +1,135 @@
+<?xml version="1.0" ?>
+<odoo>
+   <template id="pf_ledger_report">
+    <t t-call="web.html_container">
+    <t t-call="web.external_layout">
+        <t t-set="employee" t-value="active_employee.with_context()"/>
+        <t t-set="company" t-value="request.env['hr.employee'].search([('emp_number','=',active_employee.emp_number)], limit=1).company_id"/> 
+        <div class="page">
+            <div class="oe_structure"/>
+            
+            <div  style="margin-left: 800px; max-width: 250px;height: 20px;color:blue;">
+               <strong>Currency:</strong>
+               <span  t-esc="company.currency_id.name"/><br/>
+                <strong>Printed On:</strong>
+               <span  t-esc="datetime.datetime.strptime(str(datetime.datetime.now()+ relativedelta(hours =+ 5)), '%Y-%m-%d %H:%M:%S.%f').strftime('%d-%b-%y %H:%M %p')"/><br/>
+                <strong>Printed By:</strong>
+               <span  t-esc="user.name"/><br/>
+            </div>
+            
+            <div  style="position: relative; max-width: 400px;color:blue;">
+               <strong>DESCON STAFF PROVIDENT FUND TRUST</strong> <br/>
+            </div>
+            <div  style="position: relative; max-width: 400px;color:blue;">
+               <strong>PROVIDENT FUND CERTIFICATE</strong> <br/>
+            </div>
+          
+            
+            <br/>
+            <table class="table table-sm table-striped table-bordered">
+
+                <tr style="height:30%">
+                    <th  align="center">Employee</th>
+                    <td  align="center"><span t-esc="active_employee.name"/></td>
+                    <th  align="center">Employee No:</th>
+                    <td  align="center"> <span t-esc="active_employee.emp_number"/></td>
+                    <th  align="center">Period:</th>
+                    <td  align="center"> 
+                        
+                         <span t-esc="date_from.strftime('%d %B %y')"/>,  
+                        
+                        
+                         <span t-esc="date_to.strftime('%d %B %y')"/>   
+                    </td>
+                </tr>
+
+            </table>
+            <br/>
+            <table class="table table-sm table-striped table-bordered">
+		
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Description</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Balance </th>
+                    </tr>
+                </thead>
+                       
+                    <tbody class="pf_tbody">
+                         
+                          <t t-set='total_pf_opening_balance' t-value='0' />
+                          <t t-foreach="opening_balance_list" t-as="opening_balance">
+                           <tr>
+                                <td></td>
+                                <td><span t-esc="opening_balance['name']"/></td>
+                                <td><span t-esc="'{0:,}'.format(int(round(opening_balance['debit'])))"/></td>
+                                <td><span t-esc="'{0:,}'.format(int(round(opening_balance['credit'])))"/></td>
+                                <td>                                
+                                <t t-set='total_pf_opening_balance' t-value="total_pf_opening_balance + opening_balance['balance']" />
+                                  <span t-esc="'{0:,}'.format(int(round(opening_balance['balance'])))"/>
+                                    
+                                </td>
+                            </tr>
+                        </t>   
+                          <t t-foreach="pf_ledger" t-as="pf">
+                            <tr>
+                                <td><span t-esc='pf.name'/></td>
+                                <td><span t-esc='pf.description'/></td>
+                                <td><span t-esc="'{0:,}'.format(int(round(pf.debit)))"/></td>
+                                <td><span t-esc="'{0:,}'.format(int(round(pf.credit)))"/></td>
+                                <td>                                
+                                <t t-set='total_pf_opening_balance' t-value='total_pf_opening_balance + (-pf.balance)' />
+                                  <span t-esc="'{0:,}'.format(int(round(total_pf_opening_balance)))"/>
+                                    
+                                </td>
+                            </tr>    
+                          </t>
+                           
+                    </tbody>
+            </table>
+            <br/>
+            <br/>
+            <table class="table table-sm table-striped table-bordered">
+               <tr>
+                        <th style='text-align:center;' colspan='5'>Summary</th>
+                            </tr>
+                           
+                            <t t-set='total_pf_debit' t-value='0' />
+                            <t t-set='total_pf_credit' t-value='0' />
+                            <t t-set='total_pf_balance' t-value='0' />
+                        
+                            <t t-foreach="total_pf_type_list" t-as="pf_type"> 
+                            <tr>
+                                <td style='width:100px;'></td>
+                                <td><span t-esc="pf_type['name']"/></td>
+                                <td><span t-esc="'{0:,}'.format(int(round(pf_type['debit'])))"/></td>
+                                
+                                <t t-set='total_pf_debit' t-value="total_pf_debit + pf_type['debit']" />
+                                
+                                <td><span t-esc="'{0:,}'.format(int(round(pf_type['credit'])))"/></td>
+                                
+                                <t t-set='total_pf_credit' t-value="total_pf_credit + pf_type['credit']" />
+                                
+                                <td><span t-esc="'{0:,}'.format(int(round(abs(pf_type['balance']))))"/></td>
+                                
+                                <t t-set='total_pf_balance' t-value="total_pf_balance + pf_type['balance']" />
+                            </tr>
+                            </t>   
+                        
+                        <tr>
+                            <td></td>
+                            <td>Total</td>
+                            <td><span t-esc="'{0:,}'.format(int(round(total_pf_debit)))"/></td>
+                            <td><span t-esc="'{0:,}'.format(int(round(total_pf_credit)))"/></td>
+                            <td><span t-esc="'{0:,}'.format(int(round(abs(total_pf_balance))))"/></td>
+                        </tr>
+            </table>
+           
+          </div>
+    </t>
+    </t>
+</template>
+    
+</odoo>

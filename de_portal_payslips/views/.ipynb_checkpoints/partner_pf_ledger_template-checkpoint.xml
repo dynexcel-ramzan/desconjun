@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+   
+
+    <template id="portal_my_pf_ledgers" name="My PF Ledger">
+         <t t-set="foo" t-value="2 + 1"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">PF Ledger</t>
+            </t>
+            <t t-if="not grouped_pf_ledgers">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no PF Ledger.
+                </div>
+            </t>
+            <t t-if="grouped_pf_ledgers">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_pf_ledgers" t-as="pf_ledgers">
+                        <thead>
+                            <tr style='background-color:#875A7B; color:white;'>
+                               
+                                <th class="text-left">Period</th>
+                                <th class="text-left">Description</th>
+                                <th class="text-left">Debit</th>
+                                <th class="text-left">Credit</th>
+                                <th class="text-center">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set='pf_opening_balance' t-value='0' />
+                            <t t-foreach="pf_ledgers" t-as="pf">
+                             <t t-if='not pf.date'>   
+                                <tr>
+                                    <td>
+                                       
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-esc="pf.description" />
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="'{0:,}'.format(int(round(pf.debit)))" />
+                                    </td>
+                                    
+                                    <td class="text-left">  
+                                      <span t-esc="'{0:,}'.format(int(round(pf.credit)))" />
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="'{0:,}'.format(int(round(-pf.balance)))" />
+                                        <t t-set='pf_opening_balance' t-value='pf_opening_balance +(-pf.balance)' />
+                                    </td>
+                                </tr>
+                              </t>   
+                            </t>
+                            
+                            <t t-foreach="pf_ledgers.sorted(key=lambda x: x.date)" t-as="pf">
+                                <t t-if='pf.date'>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="pf.name" />
+                                        </td>
+                                         <td class="text-left">
+                                            <span t-esc="pf.description" />
+                                        </td>
+                                        <td class="text-left">
+                                            <span t-esc="'{0:,}'.format(int(round(pf.debit)))" />
+                                        </td>
+
+                                        <td class="text-left">  
+                                          <span t-esc="'{0:,}'.format(int(round(pf.credit)))" />
+                                        </td>
+                                        <td class="text-left">
+                                            <t t-set='pf_opening_balance' t-value='pf_opening_balance +(-pf.balance)' />
+                                            <span t-esc="'{0:,}'.format(int(round(pf_opening_balance)))" />
+                                        </td>
+                                    </tr>
+                                </t>
+                              </t>  
+                             <tr>
+                                 
+                                 <div>
+                                    <t class="col-lg-7 col-md-8" >
+                                        <a href="/pf/ledger/report/" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">PF Ledger Report</div> </a> 
+                                    </t>
+                                 </div>
+                                 
+                            </tr> 
+                            
+                        </tbody>
+                    </t>
+                </t>
+            </t>   
+        </t>
+    </template>
+    
+    
+        
+      <template id="print_pf_ledger_report" name="Print PF Ledger Report">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">PF Ledger Report</h1>
+                                    </div>
+                                </section>
+                            </div>
+                                            
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>   
+                                                            </p>                                                 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'employee_id': '', 'manager': '', 'date_end': '', 'description': ''}"></span>
+            <div id="report_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="portal_pf_ledger_form" data-toggle="validator" action="/hr/pf/ledger/report/">
+
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                   
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="pfledger1">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     
+                                    
+                                   
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="taxcomputation3">
+                                                <span class="s_website_form_label_content">Date From</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="check_in"   required="1" t-att-value='date_from'  t-options='{"widget": "date"}'/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                    
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="pfledger2">
+                                                <span class="s_website_form_label_content">Date To</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="check_out"  required="1"  t-att-value='date_to'  t-options='{"widget": "date"}'/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                         
+                                   
+                                   
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Print</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   
+                                                </div>      
+                                        
+                                        
+                                        
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+        
+        
+            
+    <div>
+        
+        
+        
+        
+    </div>
+
+        
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+           
+            
+          
+            
+           
+        </div>
+        <div>
+             
+            
+
+        </div>
+    
+        
+        
+    </address>
+</div>
+        
+          
+    </address>
+        
+            
+        
+    
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+                            
+                            
+                            
+            
+            
+         
+        </t>
+    </template>
+    
+    
+</odoo>
+
+
+

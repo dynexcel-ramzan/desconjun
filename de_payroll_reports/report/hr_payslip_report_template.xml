@@ -1,0 +1,266 @@
+<odoo>
+  <data>
+  <template id="slip_reconcilation_report">
+    <t t-call="web.html_container">
+    <t t-call="web.external_layout">
+        <div class="page" style="font-size:12px">
+            <div class="oe_structure"/>
+            <div class="pull-left" style="color:blue;">
+                <h3>Salary Slip For the Month Of <span t-esc="o.date_to.strftime(&quot;%b-%y&quot;)"/></h3>
+                <br/>
+                <br/>
+            </div>
+            <div class="pull-right" style="max-width: 250px;height: 20px; color:blue;margin:5px;">
+               <strong>Currency:</strong>
+               <span t-esc="o.currency_id.name"/><br/> 
+               <strong>Printed On:</strong>
+               <span t-esc="datetime.datetime.strptime(str(datetime.datetime.now()+ relativedelta(hours =+ 5)), '%Y-%m-%d %H:%M:%S.%f').strftime('%d-%b-%y %H:%M %p')"/> <br/>
+               <strong>Printed By:</strong>
+               <span t-esc="user.name"/> 
+            </div>
+            <br/>
+            <br/>
+             <div class="row">
+                  <div class="col-6">
+                     <table class="table table-sm table-striped table-bordered" width="400">
+                                        <tr>
+                                             <th style="color:blue;">Emp.Code:</th>
+                                             <th style="color:blue;"><span t-field="o.employee_id.emp_number"/></th>
+                                         </tr>
+                                         <tr>
+                                             <th style="color:blue;">Name:</th>
+                                             <th style="color:blue;"><span t-field="o.employee_id.name"/></th>
+                                         </tr>
+                                          <tr>
+                                             <td>Joining Date:</td>
+                                             <td><span t-field="o.employee_id.date"/></td>
+                                         </tr>
+                                         <tr>
+                                             <td>EOBI#</td>
+                                             <td><span t-field="o.employee_id.eobi_number"/></td>
+                                         </tr>
+                                         <tr>
+                                             <td>Position:</td>
+                                             <td><span t-field="o.employee_id.job_title"/></td>
+                                         </tr>
+                                         
+                                         <tr>
+                                             <td>Department:</td>
+                                             <td><span t-field="o.employee_id.department_id"/></td>
+                                         </tr>
+                
+                                         <tr>
+                                             <td>Location:</td>
+                                             <td><span t-field="o.employee_id.work_location_id"/></td>
+                                         </tr>
+                                         <tr>
+                                             <td>Company:</td>
+                                             <td><span t-field="o.employee_id.company_id"/></td>
+                                         </tr>
+                       </table>      
+                 </div>
+                  <div class="col-6">
+                      <table class="table table-sm table-striped table-bordered" width="400">
+                                        <tr>
+                                             <th style="color:blue;" colspan="2">Salary &amp; Allowances</th>
+                                         </tr>
+                                         <t t-set="actual_total_compasation_amount" t-value="0"/>
+                                          <tr>
+                                             <td>Base Salary:</td>
+                                             <td>
+                                               
+                                                   <span t-esc="'{0:,}'.format(int(round(o.contract_id.wage)))"/>
+                                                   <t t-set="actual_total_compasation_amount" t-value="actual_total_compasation_amount + o.contract_id.wage"/>
+                                 
+                                             </td>
+                                             
+                                         </tr>
+                                          <t t-foreach="o.contract_id.benefit_line_ids" t-as="benefit_line">
+                                            
+                                                <tr>
+                                                  <td><span t-field="benefit_line.input_type_id.name"/></td>
+                                                  <td><span t-esc="'{0:,}'.format(int(round(benefit_line.amount)))"/></td>
+                                                  <t t-set="actual_total_compasation_amount" t-value="actual_total_compasation_amount + benefit_line.amount"/>
+                                                </tr>
+                                          </t>    
+                                           
+                                         <tr>
+                                             <th>Total Income</th>
+                                             <td>
+                                                <span t-esc="'{0:,}'.format(int(round(actual_total_compasation_amount)))"/>
+                                             </td>
+                                         </tr>
+                                       
+                       </table>  
+                        
+                        <table class="table table-sm table-striped table-bordered" width="400">
+                                    <tr>
+                                         <th style="color:blue;" colspan="2">Current Month Salary</th>
+                                    </tr>
+                                    <t t-set="total_compasation_amount" t-value="0"/>
+                                     <t t-foreach="o.line_ids" t-as="other_line">
+                                       <t t-if="other_line.code in ('BASIC', 'BASIC01', 'OTH')">
+                                        <t t-if="other_line.salary_rule_id.reconcile_compansation==True">
+                                        <t t-if="other_line.amount &gt;0">   
+                                          <tr>
+                                              <td><span t-field="other_line.name"/></td>
+                                              <td><span t-esc="'{0:,}'.format(int(round(other_line.amount)))"/></td>
+                                              <t t-set="total_compasation_amount" t-value="total_compasation_amount + other_line.amount"/>
+                                          </tr>
+                                        </t>
+                                        </t>
+                                       </t>  
+                                     </t> 
+                                     <t t-foreach="o.line_ids" t-as="other_line">
+                                       <t t-if="other_line.code not in ('BASIC','BASIC01','OTH')">
+                                        <t t-if="other_line.salary_rule_id.reconcile_compansation==True"> 
+                                        <t t-if="other_line.amount &gt;0"> 
+                                          <tr>
+                                              <td><span t-field="other_line.name"/></td>
+                                              <td><span t-esc="'{0:,}'.format(int(round(other_line.amount)))"/></td>
+                                              <t t-set="total_compasation_amount" t-value="total_compasation_amount + other_line.amount"/>
+                                          </tr>
+                                        </t>
+                                        </t>
+                                       </t>  
+                                     </t>  
+                                      <tr>
+                                         <th>Total Income:</th>
+                                         <th><span t-esc="'{0:,}'.format(int(round(total_compasation_amount)))"/></th>
+                                     </tr>
+                                    
+                        </table>  
+                 </div>  
+            </div>
+             
+             <div class="row">
+                 <div class="col-6">
+                     <p width="400">
+                         <strong>Bank A/C #</strong>
+                         <span t-esc="o.employee_id.bank_account_id.acc_number"/><br/>
+                         <span t-esc="o.employee_id.bank_account_id.bank_id.street"/><span t-esc="o.employee_id.bank_account_id.bank_id.street2"/><br/>
+                         <span t-esc="o.employee_id.bank_account_id.bank_id.city"/><span t-esc="o.employee_id.bank_account_id.bank_id.state.name"/> <br/>
+                         <span t-esc="o.employee_id.bank_account_id.bank_id.zip"/><span t-esc="o.employee_id.bank_account_id.bank_id.country.name"/>
+                     </p>
+                   <table class="table table-sm table-striped table-bordered" width="400">
+                       <tr>
+                           <td>Working Days</td>
+                           <td><span t-esc="o.fiscal_month.days"/></td>
+                       </tr>
+                       <tr>
+                           <td>Payable Days</td>
+                           <td>
+                               <t t-set="absent_days" t-value="0"/>
+                               <t t-foreach="o.worked_days_line_ids" t-as="workday">
+                                <t t-if="workday.work_entry_type_id.code == &quot;ABSENT100&quot;"> 
+                                    <t t-set="absent_days" t-value="absent_days + workday.number_of_days"/>
+                               </t> 
+                               </t> 
+                               <span t-esc="(o.fiscal_month.days-absent_days)"/>
+                           </td>
+                       </tr>
+
+                       <t t-set='normal_ot_hrs'  t-value='0'/>
+                       <t t-set='normal_ot_amt'  t-value='0'/>
+
+                       <t t-foreach="request.env['hr.overtime.entry'].sudo().search([('employee_id','=',o.employee_id.id),('date','&gt;=',o.date_from),('date','&lt;=',o.date_to),('overtime_type_id.type','=','normal')])" t-as="nmr_line">
+                           <t t-set='normal_ot_hrs'  t-value='normal_ot_hrs + nmr_line.overtime_hours'/>
+                           <t t-set='normal_ot_amt'  t-value='normal_ot_amt + nmr_line.amount'/>
+                       </t>     
+                       
+                       <t t-set='gazetted_ot_hrs'  t-value='0'/>
+                       <t t-set='gazetted_ot_amt'  t-value='0'/>
+
+                       <t t-foreach="request.env['hr.overtime.entry'].sudo().search([('employee_id','=',o.employee_id.id),('date','&gt;=',o.date_from),('date','&lt;=',o.date_to),('overtime_type_id.type','in',('gazetted','rest_day'))])" t-as="gzt_line">
+                           <t t-set='gazetted_ot_hrs'  t-value='gazetted_ot_hrs + gzt_line.overtime_hours'/>
+                           <t t-set='gazetted_ot_amt'  t-value='gazetted_ot_amt + gzt_line.amount'/>
+                       </t>     
+                       <tr>
+                           <td>OT Hrs Breakup</td>
+                           <td>Normal: <span t-esc='round(normal_ot_hrs,2)'/> Gztd: <span t-esc='round(gazetted_ot_hrs,2)'/> </td>
+                       </tr>
+                       <tr>
+                           <td>OT Amt Breakup</td>
+                           <td>Normal: <span t-esc="'{0:,}'.format(int(round(normal_ot_amt)))"/> Gztd: <span t-esc="'{0:,}'.format(int(round(gazetted_ot_amt)))"/></td>
+                       </tr>
+                   </table>    
+                     
+                 </div>
+                 <br/>
+                 <div class="col-6">
+                     <br/>
+                     <table class="table table-sm table-striped table-bordered" width="400">
+                                    <tr>
+                                         <th style="color:blue;" colspan="2">Deductions:</th>
+                                    </tr>
+                                    <t t-set="total_deduction_amount" t-value="0"/>
+                                     <t t-foreach="o.line_ids" t-as="deduction_line">
+                                        <t t-if="deduction_line.salary_rule_id.reconcile_deduction==True ">
+                                          <t t-if="deduction_line.amount &gt;0 "> 
+                                          <tr>
+                                              <td><span t-field="deduction_line.name"/></td>
+                                              <td><span t-esc="'{0:,}'.format(int(round(deduction_line.amount)))"/></td>
+                                              <t t-set="total_deduction_amount" t-value="total_deduction_amount + deduction_line.amount"/>
+                                          </tr>
+                                        </t>
+                                        </t>
+                                     </t> 
+                                     <tr>
+                                         <th>Total Deductions:</th>
+                                         <th><span t-esc="'{0:,}'.format(int(round(total_deduction_amount)))"/></th>
+                                     </tr>
+                                     <t t-foreach="o.line_ids" t-as="net_line">
+                                       <t t-if="net_line.code==&quot;NET&quot;">  
+                                        <tr>
+                                            <th>NET Pay:</th>
+                                            <th><span t-esc="'{0:,}'.format(int(round(net_line.amount)))"/></th>
+                                        </tr>
+                                    </t>   
+                                </t>          
+                       </table>  
+                 </div>
+                 
+                
+                 
+                 
+             </div> 
+               <br/>
+               <br/>
+              
+                <div class="row">
+                     <br/>
+                      <t t-set="total_provident_amount" t-value="0"/>
+                        <t t-foreach="request.env['partner.pf.ledger'].search([('employee_id','=',o.employee_id.id)])" t-as="prv_line">
+                            <t t-set="total_provident_amount" t-value="total_provident_amount + prv_line.balance"/>  
+                        </t>
+                    <p style="color:blue;font-size:15px;">Provident Fund Balance :  <span t-esc="'{0:,}'.format(int(round(abs(total_provident_amount))))"/></p>
+                 </div>
+                 <br/>
+                 
+             <p>“This is a computer generated statement which is intended for the information and reference of the addresses. It doesn’t require signature.”</p>
+          </div>
+    </t>
+    </t>
+
+      
+</template>
+      
+      <template id="slip_reconcile_report">
+        <t t-call="web.html_container">
+         <t t-foreach="docs" t-as="o">
+            <t t-call="de_payroll_reports.slip_reconcilation_report" />
+         </t>
+      </t>
+     </template>
+
+      <template id="slip_portal_report">
+        <t t-call="web.html_container">
+         <t t-foreach="docs" t-as="o">
+            <t t-call="de_payroll_reports.slip_reconcilation_report" />
+         </t>        
+       </t>          
+      </template>
+    
+    
+  </data>
+</odoo>

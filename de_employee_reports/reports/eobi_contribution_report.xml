@@ -1,0 +1,27 @@
+<odoo>
+    
+     <record id="paperformat_eobi_report_landscape" model="report.paperformat">
+        <field name="name">Attendance Report Landscape</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">7</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">7</field>
+        <field name="dpi">90</field>
+      </record>
+    
+     <report id="eobi_contribution_report"
+            model="report.de_employee_reports.eobi_report"
+            string="EOBI Contribution Report"
+            report_type="qweb-pdf"
+            name="de_employee_reports.eobi_report"
+            file="de_employee_reports.eobi_report"
+            paperformat="paperformat_eobi_report_landscape"    
+    />
+</odoo>

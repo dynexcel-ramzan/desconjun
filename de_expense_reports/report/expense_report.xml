@@ -1,0 +1,9 @@
+<odoo>
+     <report id="on_employee_expense_report"
+            model="employee.expense.wizard"
+            string="Expense Advance Report"
+            report_type="xlsx"
+            name="de_expense_reports.on_employee_expense_report"
+            file="de_expense_reports.on_employee_expense_report"
+    />
+</odoo>

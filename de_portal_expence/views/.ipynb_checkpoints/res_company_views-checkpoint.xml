@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<odoo>   
+    
+     <record id="res_company_form_view_extra_approvals" model="ir.ui.view">
+        <field name="name">res.company.form.view.approval</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                  <field name="is_fbp_approval"/>
+                  <field name="expense_percent"/>
+                  <field name="expense_amt_limit"/>
+                  <field name="chanceller_id"/>
+                  <field name="finance_partner_id"/>
+                  <field name="is_project_expense"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+
+

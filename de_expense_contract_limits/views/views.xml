@@ -1,0 +1,24 @@
+
+    <odoo> 
+  
+      <data noupdate="0">
+        <record id="group_unlock_date_ora" model="res.groups">
+	   <field name="name">Accounting Period Un-Lock Rights</field>
+        </record>
+      </data>  
+
+     <record id="res_company_form_view_extra_approvals_contract" model="ir.ui.view">
+        <field name="name">res.company.form.view.approval</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                  <field name="expense_percent"/>
+                  <field name="expense_amt_limit"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+
+

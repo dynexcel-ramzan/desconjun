@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="view_pf_ledger_type_form" model="ir.ui.view">
+            <field name="name">pf.ledger.type.form</field>
+            <field name="model">pf.ledger.type</field>
+            <field name="arch" type="xml">
+                <form string="PF Ledger Type" >
+                    <sheet>
+                       <group>
+                        <group>
+                              <field name="name" />        
+                        </group>
+                        <group>
+                              <field name="sequence" />
+                        </group>
+                       </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_pf_ledger_type_tree">            
+            <field name="name">pf.ledger.type.tree</field>
+            <field name="model">pf.ledger.type</field>
+            <field name="arch" type="xml">
+                <tree string="PF">
+                    <field name="name"/>
+                    <field name="sequence" />
+                </tree>
+            </field>            
+        </record>
+
+        <record id="action_pf_ledger_type" model="ir.actions.act_window">
+            <field name="name">PF Ledger Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pf.ledger.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="view_pf_ledger_type_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create Records Here.......
+                </p>
+            </field>
+        </record>
+        
+        
+        <menuitem id="account_pf_ledger_type_menuitem"
+                  name="PF Ledger Type"
+                  parent="hr_work_entry_contract.menu_hr_payroll_configuration"
+                  action="action_pf_ledger_type"
+                  sequence="11"
+                  />
+        
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <report
+                id="hr_payslip_run_salary_bank_report"
+                model="hr.payslip.run"
+                string="Bank Account Details"
+                report_type="xlsx"
+                name="de_payroll_batch_report_xlsx.batch_bank_xlsx"
+                file="Bank Account Details"
+        />
+    </data>
+</odoo>

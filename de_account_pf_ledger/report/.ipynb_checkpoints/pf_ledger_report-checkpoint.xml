@@ -1,0 +1,9 @@
+<odoo>
+     <report id="open_pf_ledger_report"
+            model="report.de_account_pf_ledger.pf_ledger_report"
+            string="PF Ledger Report"
+            report_type="qweb-pdf"
+            name="de_account_pf_ledger.pf_ledger_report"
+            file="de_account_pf_ledger.pf_ledger_report"
+    />
+</odoo>

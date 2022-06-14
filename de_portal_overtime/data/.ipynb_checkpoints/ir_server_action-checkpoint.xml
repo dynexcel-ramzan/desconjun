@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+      
+    <record id="ir_ovt_approval_server_action" model="ir.actions.server">
+                  <field name="name">Send Approval</field>
+                  <field name="model_id" ref="de_employee_overtime.model_hr_overtime_request"/>
+                  <field name="binding_model_id" ref="de_employee_overtime.model_hr_overtime_request"/>            
+                  <field name="binding_view_types">list</field>
+                  <field name="state">code</field>
+                  <field name="code">action = records.action_send_approval() </field>
+    </record>
+
+  </data>
+</odoo>
