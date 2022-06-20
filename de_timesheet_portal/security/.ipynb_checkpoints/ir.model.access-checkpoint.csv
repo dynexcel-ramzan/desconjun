@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_timesheet_sheet_type_portal,hr.timesheet.sheet.type.portal,model_hr_timesheet_sheet_type,base.group_portal,1,0,0,0
+access_hr_timesheet_sheet_type_user,hr.timesheet.sheet.type.user,model_hr_timesheet_sheet_type,hr_timesheet.group_hr_timesheet_user,1,1,1,1
+access_hr_timesheet_type_portal,hr.timesheet.type.portal,model_hr_timesheet_type,base.group_portal,1,0,0,0
+access_hr_timesheet_type_user,he.timesheet.type.user,model_hr_timesheet_type,hr_timesheet.group_hr_timesheet_user,1,1,1,1
+access_hr_timesheet_sheet_user,hr.timesheet.sheet.user,model_hr_timesheet_sheet,hr_timesheet.group_hr_timesheet_user,1,1,1,1
+access_hr_timesheet_portal,hr.timesheet.portal,hr_timesheet.model_account_analytic_line,base.group_portal,1,1,1,1
+access_hr_timesheet_sheet_portal,hr.timesheet.sheet.portal,model_hr_timesheet_sheet,base.group_portal,1,0,0,0
+access_timesheet_report_wizard,access.timesheet.report.wizard,model_timesheet_report_wizard,,1,1,1,1

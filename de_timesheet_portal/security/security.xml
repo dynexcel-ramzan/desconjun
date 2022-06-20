@@ -1,0 +1,9 @@
+<odoo>
+  <data >
+      
+            <record id="group_site_timesheet_portal" model="res.groups">
+	        <field name="name">Allow Timesheet Payslips</field>
+	    </record>
+   
+  </data>
+</odoo>

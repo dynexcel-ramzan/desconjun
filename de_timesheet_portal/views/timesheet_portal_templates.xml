@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    
+    <template id="print_site_timesheet_report" name="print Timesheet report">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">Timesheet Report</h1>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>
+
+                                                            </p>
+
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'employee_id': '', 'manager': '', 'date_end': '', 'description': ''}"></span>
+            <div id="report_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="portal_sheet_print_form" data-toggle="validator" action="/site/timesheet/print/report">
+
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="sitesheet1">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+
+                                             <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="sitesheet2">
+                                                <span class="s_website_form_label_content">Type</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                             <select  id="type" class="form-control  s_website_form_input" name="type" >
+                                                 <option value="summary">
+                                                    Summary
+                                                 </option>
+                                                 <option value="detail">
+                                                    Detail
+                                                 </option>
+                                             </select>    
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="sitesheet3">
+                                                <span class="s_website_form_label_content">Date From</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+
+                                              <input type="date" class="form-control s_website_form_input" name="check_in"   required="1"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="sitesheet4">
+                                                <span class="s_website_form_label_content">Date To</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+
+                                              <input type="date" class="form-control s_website_form_input" name="check_out"  required="1"  />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Print</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   
+                                                </div>
+
+
+
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+
+
+
+    <div>
+
+
+
+
+    </div>
+
+
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+
+
+
+
+
+        </div>
+        <div>
+
+
+
+        </div>
+
+
+
+    </address>
+</div>
+
+
+    </address>
+
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+
+
+
+
+
+
+        </t>
+    </template>
+
+
+    
+    <!-- display link at my home page -->
+    <template id="portal_my_home" name="Show Reports / Timesheets" customize_show="True" inherit_id="portal.portal_my_home" priority="100">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry" groups='de_timesheet_portal.group_site_timesheet_portal'>
+                <t t-set="title">Timesheet</t>
+                <t t-set="url" t-value="'/my/timelogs'"/>
+                <t t-set="placeholder_count" t-value="'timesheet_report_count'"/>
+            </t>
+        </xpath>
+    </template>
+    
+    <!-- breadcrumb -->
+    <template id="portal_layout" name="Portal layout: Timesheet report menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'sheet' or sheet" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not sheet else ''}">
+                <a t-if="sheet" t-attf-href="/my/timelogs?{{ keep_query() }}">Timesheets</a>
+                <t t-else="">Timesheet</t>
+            </li>
+            <li t-if="page_name == sheet" class="breadcrumb-item active">
+                <a t-if="sheet" t-attf-href="/my/timelogs/{{ sheet.id }}?{{ keep_query() }}"><t t-esc="sheet.name"/></a>
+                <t t-else="">Timesheet</t>
+            </li>
+            <li t-elif="sheet" t-attf-class="breadcrumb-item #{'active ' if not sheet else ''} text-truncate col-8 col-lg-10">
+                <t t-esc="sheet.name"/>
+            </li>
+           
+        </xpath>
+    </template>
+    
+    <!-- Timesheet Report Page -->
+    <template id="portal_my_timelogs" name="My Time logs Reports">
+        
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Time Sheet</t>
+            </t>
+            <t class="col-lg-7 col-md-8 mb16" >
+                <button class="btn btn-primary" data-target="#timelog_new_modal" data-toggle="modal">Create Timesheet</button>
+            </t>
+            <t class="pull-right col-lg-7 col-md-8 mb16" >
+                 <a href="/site/timesheet/print/" > <div class="btn btn-primary pull-right" style="height:30px; line-height:100%; ">print</div> </a>
+            </t>
+            <t t-if="not sheets">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no time Sheet to report.
+                </div>
+            </t>
+            
+            <!-- Modal dialogs -->
+            <t t-call="de_timesheet_portal.portal_action_sheet_modal_dialogs"/>
+            
+            <t t-if="sheets" t-call="portal.portal_table">
+                <thead>
+                    <tr style='background-color:#875A7B; color:white;'>
+                        <th>Title</th>
+                        <th>Request Date</th>
+                        <th>Employee</th>
+                        <th class="text-right">Planned Hours</th>
+                        <th class="text-right">Total Work Hrs</th>
+                        <th class="text-right">Idle Hrs</th>
+                        <th>Status</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="sheets" t-as="sheet">
+                        <td>
+                            <t t-call="de_timesheet_portal.portal_action_modal_dialogs"/>
+                              <a t-attf-href="/my/timelog/#{sheet.id}?{{ keep_query() }}"><span t-field="sheet.name"/>                               </a>
+                        </td>
+                        <td>
+                            <t t-esc="sheet.date"  t-options='{"widget": "date"}' />
+                        </td>
+                        <td>
+                            <t t-esc="sheet.employee_id.name" /> 
+                        </td>
+                        <td class="text-right">
+                            <t t-esc="round(sheet.planned_hours,2)" t-options='{"widget": "float_time"}' />
+                        </td>
+                        <td class="text-right">
+                            <t t-esc="round(sheet.total_hours,2)" t-options='{"widget": "float_time"}' />
+                        </td>
+                        <td class="text-right">
+                            <t t-esc="round(sheet.diff_hours,2)" t-options='{"widget": "float_time"}' />
+                        </td>
+                        <td class="text-right">
+                            <t t-esc="sheet.state" />
+                        </td>
+                        <td class="text-right">
+                         <t t-if='sheet.state=="pending"'>   
+                          <t t-foreach="sheet.request_id.approver_ids" t-as="app">  
+                            <t t-if='app.user_id.id==uid'>
+                                <a class="btn btn-primary" t-attf-href="/my/timelog/approve/#{sheet.id}?"><i class="fa fa-check"/></a>
+                            </t>
+                          </t> 
+                          </t>    
+                        </td>
+                        <td class="text-right">
+                            <t t-if='sheet.state=="pending"'>
+                              <t t-foreach="sheet.request_id.approver_ids" t-as="app">  
+                               <t t-if='app.user_id.id==uid'>  
+                                  <a role="button" class="btn btn-primary" t-att-href="'/my/timelog/draft/%s/%s' % (sheet.id, sheet.access_token)">Refuse</a>
+                               </t>
+                              </t>    
+                            </t> 
+                            
+                            <t t-if='sheet.state=="draft"'>
+                              <t t-if='sheet.employee_id.user_id.id==uid'>  
+                                <a role="button" class="btn btn-primary" t-att-href="'/my/timelog/reject/%s/%s' % (sheet.id, sheet.access_token)">Cancel</a>
+                              </t>          
+                            </t>    
+                           
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    
+    <!-- ======================================== -->
+    <!-- ===== Model for new sheet creation ===== -->
+    <!-- ======================================== -->
+    <template id="portal_action_sheet_modal_dialogs" name="Portal: action model dialogs">
+        <!-- modal relative to the action reject -->
+        <div class="modal" tabindex="-1" role="dialog" id="timelog_new_modal">
+            <div class="modal-dialog" role="document">
+                <form id="timelog_new" data-toggle="validator" action="/my/timelog/add" method="post"  enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">New Timesheet</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mt8">
+								<div class="col-sm-3">
+                                    <label for="name" class="control-label"><strong>Timesheet Title *: </strong></label>
+								</div>
+                                <div class="col-sm-9">
+									<input type="text" id="name" name="name" class="form-control" required="1" />
+								</div>
+							</div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                        </div>
+                    </div>
+                </form> 
+            </div>
+        </div>
+        
+    </template>
+    
+    
+    
+    
+    
+    <!--
+   <template id="portal_my_timelog" name="My Timesheet">
+-->
+    <template id="portal_my_timelog" name="Portal: My timelog" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <div class="row mt16 o_portal_sheet_sidebar">
+
+                <!-- Page contents -->
+                <div id="sheet_content" class="col-12 col-lg justify-content-end">
+                    
+                    <!-- Modal dialogs -->
+                    <t t-call="de_timesheet_portal.portal_action_modal_dialogs"/>
+                    
+                    
+                    <!-- status messages -->
+                    <div t-if="message == 'cant_reject' " class="alert alert-danger alert-dismissable d-print-none" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+                        Your request is not in a state to be rejected.
+                    </div>
+                    <div t-if="sheet.state == 'pending' and sheet.user_status != 'approved' " class="alert alert-danger alert-dismissable d-print-none" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                        <strong>The request has been submitted. </strong>
+                    </div>
+                    <div t-if="sheet.user_status == 'approved' and sheet.state == 'pending'" class="alert alert-success alert-dismissable d-print-none" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                        <strong>You request has been approved. </strong>
+                    </div>
+                    <div t-if="sheet.user_status == 'refused' and sheet.state == 'pending'" class="alert alert-danger alert-dismissable d-print-none" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                        <strong>You have refused the request. </strong>
+                    </div>
+                    <div t-if="sheet.user_status == 'cancel'" class="alert alert-danger alert-dismissable d-print-none" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close">×</button>
+                        <strong>The request has been cancelled. </strong>
+                    </div>
+
+                    <!-- main content -->
+                    <div t-attf-class="card #{'pb-5' if report_type == 'html' else ''}" id="portal_sheet_content">
+                        <div t-call="de_timesheet_portal.sheet_portal_content"/>
+                    </div>
+                    
+                    <!-- bottom actions -->
+                    <div class="row justify-content-center text-center d-print-none pt-1 pb-4">
+                        <t>
+                            <div class="col-sm-auto mt8" t-if="sheet.state == 'draft' or sheet.user_status == 'new'">
+                              <t t-if='sheet.employee_id.user_id.id==uid'>  
+                                 <a class="btn btn-secondary" t-attf-href="/my/timelog/submit/#{sheet.id}?"><i class="fa fa-check"/><t> Submit Request</t></a>
+                              </t>    
+                            </div>
+                            
+                            <div class="col-sm-auto mt8" t-if="sheet.state == 'pending' and sheet.user_status == 'pending'">
+                                <a class="btn btn-primary" t-attf-href="/my/timelog/approve/#{sheet.id}?"><i class="fa fa-check"/><t> Approve</t></a>
+                            </div>
+                            <div class="col-sm-auto mt8" t-if="sheet.state == 'pending' and sheet.user_status == 'pending'">
+                                <button class="btn btn-danger" data-target="#timelog_reject_modal" data-toggle="modal"><i class="fa fa-times"/> Reject</button>
+
+                            </div>
+                        </t>
+                        
+                    </div>
+                    
+                    <!-- chatter -->
+                    <div class="mt32">
+                        <h4><strong>Message and communication history</strong></h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="sheet"/>
+                            <t t-set="token" t-value="sheet.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </xpath>
+    </template>
+    
+    <template id="sheet_portal_content" name="Timesheet Portal Content">
+        <!-- Intro -->
+        <div id="introduction" t-attf-class="pb-2 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
+                <div class="row no-gutters">
+                    <div class="col-12">
+                        <h5 class="d-flex mb-1 mb-md-0 row">
+                            <div class="col-9">
+                                <span t-field="sheet.name" class="text-truncate"/>
+                                <small class="text-muted d-none d-md-inline"> (#<span t-field="sheet.id"/>)</small>
+                            </div>
+                            <div class="col-3 text-right">
+                                <span t-field="sheet.state" class=" badge badge-pill badge-info" title="Current stage of this sheet"/>
+                            </div>
+                        </h5>
+                    </div>
+                </div>
+        </div>
+        <div t-attf-class="#{'card-body' if report_type == 'html' else ''}">
+            <!-- Informations -->
+            <div id="informations">
+
+                <div class="row" id="so_date">
+                    <div class="mb-3 col-4">
+                        <strong>Employee:</strong>
+                        <span t-field="sheet.employee_id.name" />
+                    </div>
+                    
+                    <div class="mb-3 col-4">
+                        <strong>Manager:</strong>
+                        <span t-field="sheet.employee_id.parent_id.name" />
+                    </div>
+                    <div class="mb-3 col-4">
+                        <strong>Department:</strong>
+                        <span t-field="sheet.department_id.name" />
+                    </div>
+                    
+                </div>
+                <div class="row" id="sheet_hours">
+                    <div class="mb-3 col-4">
+                        <strong>Planned Hrs:</strong>
+                        <span t-field="sheet.planned_hours" t-options='{"widget": "float_time"}' />
+                    </div>
+                    <div class="mb-3 col-4">
+                        <strong>Total Work Hrs:</strong>
+                        <span t-field="sheet.total_hours" t-options='{"widget": "float_time"}'/>
+                    </div>
+                    <div class="mb-3 col-4">
+                        <strong>Idle Hrs:</strong>
+                        <span t-field="sheet.diff_hours" t-options='{"widget": "float_time"}' />
+                    </div>
+                </div>
+            </div>
+            <t t-if='sheet.state=="draft"'>
+        <t t-if='sheet.employee_id.user_id.id==uid'>    
+        <form id="timelog_new" data-toggle="validator" action="/my/timelog/add/line" method="post"  enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <input type="hidden" name="sheet_id" t-att-value="sheet.id"/>
+                         <script  src="/de_timesheet_portal/static/src/js/jquery_1_2.js"></script>
+                         <script  src="/de_timesheet_portal/static/src/js/jquery_min.js"></script>
+                         <script  src="/de_timesheet_portal/static/src/js/jquery_ui.js"></script>
+                         <script>
+                            $(function () {
+                                error_flag=document.getElementById("error_flag").value;
+                                errora_message=document.getElementById("errora_message").value;
+                                if (error_flag=='1') {
+                                  alert(errora_message)
+                                }
+                            });
+                          </script>
+                          <input id='error_flag' type="hidden" class="form-control s_website_form_input" name="error_flag"  t-att-value='error_flag'/>
+                          <input id='errora_message' type="hidden" class="form-control s_website_form_input" name="errora_message"  t-att-value='errora_message'/>
+                    <div class="modal-content">
+                        
+                        <div class="modal-body">
+                            <div class="row mt8">
+								<div class="col-sm-2">
+                                    <label for="project" class="control-label"><strong>Project: </strong></label>
+								</div>
+                                <div class="col-sm-4">
+                                    <select id="project_id" name="project_id" t-attf-class="form-control link-style" >
+                                         <t t-if='error_flag==1'>
+                                             <t t-foreach="request.env['project.project'].sudo().search([('id','=',project_id_ora)])" t-as="p">
+                                                <option t-att-value="p.id" >
+                                                   <t t-esc="p.name" />
+                                                </option>
+                                            </t>       
+                                         </t>
+                                         <t t-foreach="projects" t-as="p">
+                                            <option t-att-value="p.id" >
+                                                <t t-esc="p.name" />
+                                            </option>
+                                         </t>
+                                    </select>
+								</div>	
+                                 <div class="col-sm-2">
+                                    <label for="task" class="control-label"><strong>Task: </strong></label>
+								</div>
+                                <div class="col-sm-4">                                    
+                                    <select name="task_id" t-attf-class="form-control link-style" data-init="1">
+                                        <t t-if='error_flag==1'>
+                                             <t t-foreach="request.env['hr.timesheet.type'].sudo().search([('id','=',task_id_ora)])" t-as="t">
+                                                <option t-att-value="t.id" >
+                                                   <t t-esc="t.name" />
+                                                </option>
+                                            </t>       
+                                         </t>
+                                        <t t-foreach="type_ids" t-as="t">
+                                            <option t-att-value="t.id" >
+                                                <t t-esc="t.name" />
+                                            </option>
+                                        </t>
+                                    </select>
+								</div>
+							</div>
+                             <div class="row mt8">
+                                <div class="col-sm-2">
+                                    <label for="date" class="control-label"><strong>Date:</strong></label>
+								</div>
+                                <div class="col-sm-4">
+                                    <input type="date" id="date" name="date" class="form-control" required="1" t-att-value="date" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="name" class="control-label"><strong>Remarks*: </strong></label>
+								</div>
+                                <div class="col-sm-4">
+									<input type="text" id="name" name="name" class="form-control" required="1" t-att-value="name"/>
+								</div>
+                            </div>
+                            
+                             <div class="row mt8">
+                                <div class="col-sm-2">
+                                    <label for="date_from" class="control-label"><strong>Start Time:</strong></label>
+								</div>
+                                <div class="col-sm-4">
+                                    <input type="time"  id="unit_amount_from" name="unit_amount_from" class="form-control" required="1"  t-options='{"widget": "float_time"}' t-att-value="unit_amount_from" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="date_from" class="control-label"><strong>End Time:</strong></label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="time" id="unit_amount_to" name="unit_amount_to" class="form-control" required="1" t-options='{"widget": "float_time"}' t-att-value="unit_amount_to" />
+                                </div>
+                            </div>
+                           
+                           
+                        </div>
+                        <div class="modal-footer">                            
+                            <button type="submit" class="btn btn-primary">Add a Line</button>
+                        </div>
+                    </div>
+                    </form>
+            </t>
+            </t>
+        <table class="table table-sm">
+            <thead>
+              <tr style='background-color:#875A7B; color:white;'>
+                <th>Date</th>
+                <th>Project</th>
+                <th>Task</th>
+                <th>Description</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Duration (Hrs)</th>
+                <th></th>  
+              </tr>
+            </thead>
+            <tr t-foreach="sheet.timesheet_line_ids" t-as="timesheet">
+                <td><t t-esc="timesheet.line_date"  t-options='{"widget": "date"}'/></td>
+                <td><t t-esc="timesheet.project_id.name"/></td>
+                <td><t t-esc="timesheet.task_id.name"/></td>
+                <td><t t-esc="timesheet.name"/></td>
+                <td >
+                    <span  t-field="timesheet.unit_amount_from" />
+                </td>
+                <td >
+                    <span  t-field="timesheet.unit_amount_to" />
+                </td>
+                
+                <td >
+                    <span  t-field="timesheet.unit_amount" t-options='{"widget": "float_time"}'/>
+                </td>
+                <td class="text-right" t-if="sheet.state == 'draft'">
+                   <t t-if='sheet.employee_id.user_id.id==uid'>  
+                      <a t-attf-href="/my/timelog/delete/#{timesheet.id}?"><i class="fa fa-trash"></i></a>
+                   </t>    
+                </td>
+                
+            </tr>
+            
+        </table>
+            
+        </div>
+        
+    </template>
+
+    <!-- Display timesheet records in line item of detail page -->
+    <template id="portal_timesheet_table" name="Portal Timesheet Table">
+
+        <t t-call="de_timesheet_portal.portal_action_modal_timesheet_dialogs"/>
+        
+    </template>
+
+    <!-- relevant modals of action buttons -->
+    <template id="portal_action_modal_dialogs" name="Portal: action model dialogs">
+        
+        <!-- modal relative to the action reject -->
+        <div class="modal" tabindex="-1" role="dialog" id="timelog_reject_modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reject Timesheet</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you wish to proceed?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a role="button" class="btn btn-primary" t-att-href="'/my/timelog/draft/%s/%s' % (sheet.id, sheet.access_token)">Reject</a>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        
+    </template>
+    
+    <!-- relevant modals of action dialogues for timesheet line items -->
+    <template id="portal_action_modal_timesheet_dialogs" name="Portal: action model timesheet dialogs">
+        <!-- modal relative to the action reject -->
+        <div class="modal" tabindex="-1" role="dialog" id="timelog_edit_modal">
+                <div class="modal-dialog" role="document">
+                       
+            </div>
+        </div>
+        <!-- modal relative to the action reject -->
+        <div class="modal" tabindex="-1" role="dialog" id="timelog_new_modal">
+                <div class="modal-dialog" role="document">
+                <form id="timelog_new" data-toggle="validator" action="/my/timelog/add/line" method="post"  enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <input type="hidden" name="sheet_id" t-att-value="sheet.id"/>
+                         <script  src="/de_timesheet_portal/static/src/js/jquery_1_2.js"></script>
+                         <script  src="/de_timesheet_portal/static/src/js/jquery_min.js"></script>
+                         <script  src="/de_timesheet_portal/static/src/js/jquery_ui.js"></script>
+                         <script>
+                            $(function () {
+                                error_flag=document.getElementById("error_flag").value;
+                                errora_message=document.getElementById("errora_message").value;
+                                if (error_flag=='1') {
+                                  alert(errora_message)
+                                }
+                            });
+                          </script>
+                          <input id='error_flag' type="hidden" class="form-control s_website_form_input" name="error_flag"  t-att-value='error_flag'/>
+                          <input id='errora_message' type="hidden" class="form-control s_website_form_input" name="errora_message"  t-att-value='errora_message'/>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">New Timesheet</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mt8">
+								<div class="col-sm-3">
+                                    <label for="project" class="control-label"><strong>Project: </strong></label>
+								</div>
+                                <div class="col-sm-9">
+                                    <select id="project_id" name="project_id" t-attf-class="form-control link-style" >
+                                        
+                                        <t t-foreach="projects" t-as="p">
+                                            <option t-att-value="p.id" >
+                                                <t t-esc="p.name" />
+                                            </option>
+                                        </t>
+                                    </select>
+								</div>	
+							</div>
+                            <div class="row mt8">
+								<div class="col-sm-3">
+                                    <label for="task" class="control-label"><strong>Task: </strong></label>
+								</div>
+                                <div class="col-sm-9">                                    
+                                    <select name="task_id" t-attf-class="form-control link-style" data-init="1">
+                                        
+                                        <t t-foreach="type_ids" t-as="t">
+                                            <option t-att-value="t.id" >
+                                                <t t-esc="t.name" />
+                                            </option>
+                                        </t>
+                                    </select>
+								</div>
+							</div>
+                            <div class="row mt8">
+                                <div class="col-sm-3">
+                                    <label for="date" class="control-label"><strong>Date:</strong></label>
+								</div>
+                                <div class="col-sm-9">
+                                    <input type="date" id="date" name="date" class="form-control" required="1" />
+                                </div>
+                            </div>
+                            <div class="row mt8">
+                                <div class="col-sm-3">
+                                    <label for="date_from" class="control-label"><strong>Time From:</strong></label>
+								</div>
+                                <div class="col-sm-4">
+                                    <input type="time"  id="unit_amount_from" name="unit_amount_from" class="form-control" required="1"  t-options='{"widget": "float_time"}'/>
+                                </div>
+                                <div class="col-sm-1">
+                                    <label for="date_from" class="control-label"><strong>To:</strong></label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="time" id="unit_amount_to" name="unit_amount_to" class="form-control" required="1" t-options='{"widget": "float_time"}' />
+                                </div>
+                            </div>
+                            <div class="row mt8">
+								<div class="col-sm-3">
+                                    <label for="name" class="control-label"><strong>Remarks*: </strong></label>
+								</div>
+                                <div class="col-sm-9">
+									<input type="text" id="name" name="name" class="form-control" required="1" />
+								</div>
+								
+							</div>
+                        </div>
+                        <div class="modal-footer">                            
+                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+        </div>
+    </template>
+    
+    <!-- Form Link -->
+    <template id="hr_timesheet_add_create_button" name="Portal: Add create button field" inherit_id="hr_timesheet.portal_my_timesheets" priority="100">
+        <xpath expr="//t[@t-call='portal.portal_table']" position="inside">
+            <t class="col-lg-7 col-md-8" >
+                <a href="/my/timesheets/new_timesheet/" >
+                    <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">Create Timesheet</div>
+                </a>
+            </t>
+        </xpath>
+    </template>
+        
+    
+</odoo>

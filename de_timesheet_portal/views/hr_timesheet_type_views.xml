@@ -1,0 +1,108 @@
+<odoo>
+  <data>
+          <!-- Partner Stage Views -->
+    <record id="hr_timesheet_sheet_type_list_view" model="ir.ui.view">
+        <field name="name">hr.timesheet.sheet.type.list.view</field>
+        <field name="model">hr.timesheet.sheet.type</field>
+        <field name="arch" type="xml">
+            <tree string="Timemsheet Report Stages">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="stage_code" optional="hide"/>
+                <field name="stage_category"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="hr_timesheet_sheet_type_form_view" model="ir.ui.view">
+        <field name="name">hr.timesheet.sheet.type.form.view</field>
+        <field name="model">hr.timesheet.sheet.type</field>
+        <field name="arch" type="xml">
+            <form string="Timesheet Report Stages">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="stage_code"/>
+                            <field name="sequence" />
+                          <field name="department_id" options="{'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="stage_category" widget="radio"/>
+                            <field name="validation_type" widget="radio"/>
+                            <field name="group_id" options="{'no_create': True,'no_open':True}" attrs="{'invisible': [('validation_type','!=','group')], 'required': [('validation_type','=','group')]}"/>
+                            <field name="manager_approval_level" attrs="{'invisible': [('validation_type','!=','manager')], 'required': [('validation_type','=','manager')]}"/>
+                        </group>
+                    </group>
+                    <separator string="Requirements"/>
+                    <field name="description"
+                           placeholder="Give your team the requirements to move a subscription to this stage."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+		<record id="action_hr_timesheet_report_type" model="ir.actions.act_window">
+			<field name="name">Timesheet Stages</field>
+			<field name="res_model">hr.timesheet.sheet.type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new timesheet stage
+				</p>
+               
+			</field>
+		</record>
+    
+      <menuitem id="hr_timesheet_configuration_main"
+        name="Configuration"
+        parent="hr_timesheet.timesheet_menu_root"
+        sequence="100"/>
+    
+    <record id="hr_timesheet.hr_timesheet_menu_configuration" model="ir.ui.menu">
+        <field name="parent_id" ref="hr_timesheet_configuration_main"/>
+        <field name="name">Settings</field>
+        <field name="sequence">1</field>
+    </record>
+      
+      
+      <menuitem id="hr_timesheet_report_type_menuitem"
+            name="Timesheet Stages"
+            sequence="2"
+            groups="hr_timesheet.group_timesheet_manager"
+            parent="hr_timesheet_configuration_main"
+            action="action_hr_timesheet_report_type"/>
+      
+      <!-- Timesheet Category -->
+      <record id="hr_timesheet_type_list_view" model="ir.ui.view">
+        <field name="name">hr.timesheet.type.list.view</field>
+        <field name="model">hr.timesheet.type</field>
+        <field name="arch" type="xml">
+            <tree string="Timemsheet type" editable="top">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+      
+      <record id="action_hr_timesheet_type" model="ir.actions.act_window">
+			<field name="name">Timesheet category</field>
+			<field name="res_model">hr.timesheet.type</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new timesheet category
+				</p>
+               
+			</field>
+		</record>
+      
+      <menuitem id="hr_timesheet_type_menuitem"
+            name="Timesheet Type"
+            sequence="3"
+            groups="hr_timesheet.group_timesheet_manager"
+            parent="hr_timesheet_configuration_main"
+            action="action_hr_timesheet_type"/>
+
+  </data>
+</odoo>

@@ -1,0 +1,105 @@
+<odoo>
+  <data>
+      <!-- HR Timesheet Sheet form view -->
+      <record id="view_hr_timesheet_sheet_list_view" model="ir.ui.view">
+        <field name="name">hr.timesheet.sheet.list.view</field>
+        <field name="model">hr.timesheet.sheet</field>
+        <field name="arch" type="xml">
+            <tree string="Timemsheet Report Stages">
+                <field name="name" />
+                <field name="date" />
+                <field name="employee_id" widget="many2one_avatar_employee"/>
+                <field name="state" />
+            </tree>
+        </field>
+          
+      </record>
+      <!-- HR Timesheet Sheet form view -->
+      <record id="view_hr_timesheet_sheet_form_view" model="ir.ui.view">
+            <field name="name">hr.timesheet.sheet.form.view</field>
+            <field name="model">hr.timesheet.sheet</field>
+            <field eval="25" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Timesheet Reports" class="o_timesheet_sheet">
+                    <header>
+                        <button name="action_submit_sheet" states="draft" string="Submit to Manager" type="object" class="oe_highlight" data-hotkey="l"/>
+                        <button name="action_approve" string="Approve" type="object" class="oe_highlight" data-hotkey="a" attrs="{'invisible': ['|',('state', '!=', 'pending'),('user_status','not in',['new','pending'])]}"/>
+                        <button name="action_refuse" string="Refuse" type="object" data-hotkey="r" attrs="{'invisible': ['|',('state', '!=', 'pending'),('user_status','not in',['new','pending'])]}"/>
+
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,pending,approve,done" force_save="1"/>
+
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Timesheet of Week 01/2022"/>
+                        </h1>
+                    </div>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                                <field name="department_id"/>
+                                <field name="request_id"/>
+                                <field name="user_status"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="planned_hours"/>
+                                <field name="total_hours"/>
+                                <field name="diff_hours"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="timesheets" string="Timesheet">
+                                <field name="timesheet_line_ids" context="{'default_employee_id': employee_id}">
+                                    <tree editable="bottom">
+                                        <field name="line_date" string='Date'/>
+                                        <field name="date" invisible='1'/>
+                                        <field name="rest_day" invisible='1'/>
+                                        <field name="employee_id" invisible="1"/>
+                                        <field name="project_id" required="1" options="{'no_create_edit': True}"/>
+                                        <field name="task_id" optional="show" options="{'no_create_edit': True, 'no_open': True}" widget="task_with_hours" context="{'default_project_id': project_id}" domain="[('project_id', '=', project_id)]"/>
+                                        <field name="name" optional="show" required="0"/>
+                                         <field name="unit_amount_from" optional="hide" widget="timesheet_uom" decoration-danger="unit_amount &gt; 24"/>
+                                         <field name="unit_amount_to" optional="hide" widget="timesheet_uom" decoration-danger="unit_amount &gt; 24"/>
+                                        <field name="unit_amount" optional="show" widget="timesheet_uom" sum="Total" decoration-danger="unit_amount &gt; 24"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="user_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+          </field>
+      </record>
+      
+    <!-- HR Timesheet Sheet -->
+      <record id="action_hr_timesheet_sheet_my_all" model="ir.actions.act_window">
+            <field name="name">My Reports</field>
+            <field name="res_model">hr.timesheet.sheet</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No timesheet report found. Let's create one!
+              </p><p>
+                Once you have created your timesheet, submit it to your manager who will validate it.
+              </p>
+            </field>
+        </record>
+      
+      <menuitem id="timesheet_menu_sheet"
+            name="My Reports"
+            groups="hr_timesheet.group_hr_timesheet_user"
+            parent="hr_timesheet.menu_hr_time_tracking"
+            action="action_hr_timesheet_sheet_my_all"/>
+
+  </data>
+</odoo>
