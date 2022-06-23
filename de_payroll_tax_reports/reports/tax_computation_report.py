@@ -30,7 +30,7 @@ class PayrollTaxComputation(models.AbstractModel):
         payslips=self.env['hr.payslip'].sudo().search([('employee_id','=',employee.id),('date_to','>=',date_from),('date_to','<=',date_to),('tax_year','>','2021'),('state','!=','cancel') ], order='date_to asc')
         salary_rules=self.env['hr.salary.rule'].sudo().search([('computation_report','=',True)], order='computation_sequence asc')
         
-        ora_tax_opening = self.env['hr.tax.ded'].sudo().search([('employee_id','=',employee.id),('date','>=',date_from),('date','<=',date_to),('period_num','<', 7),('tax_year','=','2021') ], order='date asc')
+        ora_tax_opening = self.env['hr.tax.ded'].sudo().search([('employee_id','=',employee.id),('date','>=',date_from),('date','<=',date_to),('period_num','<', 8),('tax_year','in', ('2021','2022')) ], order='date asc')
         
         pfund_rule=self.env['hr.salary.rule'].sudo().search([('pfund_amount','=',True)], limit=1) 
         contract=self.env['hr.contract'].sudo().search([('employee_id','=',employee.id),('state','=','open')], limit=1)

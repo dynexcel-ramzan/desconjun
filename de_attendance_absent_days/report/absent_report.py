@@ -15,9 +15,13 @@ class EmployeeReportXlS(models.AbstractModel):
         company_data = ' '
         employees = []
         if  data.company_ids:
-            employees = self.env['hr.employee'].sudo().search([('company_id','in', data.company_ids.ids)])
+            employees = self.env['hr.employee'].sudo().search([('company_id','in', data.company_ids.ids),('resigned_date','=',False)])
+            if data.resign==True:
+                employees = self.env['hr.employee'].sudo().search([('company_id','in', data.company_ids.ids),('resigned_date','!=',False)])
         elif data.employee_ids:
-            employees = self.env['hr.employee'].sudo().search([('id','in', data.employee_ids.ids)])    
+            employees = self.env['hr.employee'].sudo().search([('id','in', data.employee_ids.ids),('resigned_date','=',False)])
+            if data.resign==True:
+                employees = self.env['hr.employee'].sudo().search([('id','in', data.employee_ids.ids),('resigned_date','!=',False)])    
         sr_no = 1 
         for employee in employees:
             leave_status = ' '

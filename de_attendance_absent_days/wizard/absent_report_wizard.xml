@@ -12,11 +12,12 @@
                             <field name="company_ids" widget="many2many_tags"/>
                         </group>
                         <group>                            
-							<field name="date_to"/>  
+                            <field name="date_to"/>  
+                            <field name="resign"/> 
                         </group>    
                     </group>  
                     <notebook>
-                         <page string="Employees">
+                         <page string="Employees" >
                              <field name="employee_ids">
                                 <tree editable="bottom">
                                     <field name="id" invisible="1"/>

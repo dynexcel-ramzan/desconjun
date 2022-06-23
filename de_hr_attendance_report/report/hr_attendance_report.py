@@ -40,7 +40,7 @@ class HrAttendanceReport(models.AbstractModel):
                 remarks = 'Absent'
                 absent = '1'
                 rest_day = 'N'
-                current_shift = self.env['resource.calendar'].search([('company_id','=',employee.company_id.id)], limit=1)
+                current_shift = self.env['resource.calendar'].sudo().search([('company_id','=',employee.company_id.id)], limit=1)
                 if employee.shift_id: 
                     current_shift = employee.shift_id 
                 shift_line=self.env['hr.shift.schedule.line'].sudo().search([('employee_id','=',employee.id),('date','=',start_date),('state','=','posted')], limit=1)
@@ -66,8 +66,8 @@ class HrAttendanceReport(models.AbstractModel):
                         if shift_line.rest_day==True:
                             rest_day_count -=1
                 working_hours = 0
-                exist_attendances=self.env['hr.attendance'].search([('employee_id','=',employee.id),('att_date','=',start_date)])
-                leaves = self.env['hr.leave'].search([('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','in',('confirm','validate'))])
+                exist_attendances=self.env['hr.attendance'].sudo().search([('employee_id','=',employee.id),('att_date','=',start_date)])
+                leaves = self.env['hr.leave'].sudo().search([('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','in',('confirm','validate'))])
                 check_in_time = ''
                 check_out_time = ''
                 leave_number_of_days = 0
@@ -78,7 +78,7 @@ class HrAttendanceReport(models.AbstractModel):
                     elif leave_day.state=='confirm':
                         leave_status = 'confirm'                       
                     leave_number_of_days += leave_day.number_of_days
-                rectification = self.env['hr.attendance.rectification'].search([('employee_id','=',employee.id),('check_in','<=', start_date),('check_out','>=', start_date),('state','in',('submitted','approved'))], limit=1)
+                rectification = self.env['hr.attendance.rectification'].sudo().search([('employee_id','=',employee.id),('check_in','<=', start_date),('check_out','>=', start_date),('state','in',('submitted','approved'))], limit=1)
                 for attendee in exist_attendances:
                     check_in_time = attendee.check_in
                     check_out_time = attendee.check_out    
@@ -87,7 +87,7 @@ class HrAttendanceReport(models.AbstractModel):
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
                     working_hours += attendee.worked_hours
-                if (working_hours > (current_shift.hours_per_day-1.5)):
+                if (working_hours >= (current_shift.hours_per_day-1.6)):
                     remarks = 'Attendance Present'
                     attendance_day_count += 1
                     absent = '0'
@@ -268,7 +268,7 @@ class PortalAttendanceReport(models.AbstractModel):
                 remarks = 'Absent'
                 absent = '1'
                 rest_day = 'N'
-                current_shift = self.env['resource.calendar'].search([('company_id','=',employee.company_id.id)], limit=1)
+                current_shift = self.env['resource.calendar'].sudo().search([('company_id','=',employee.company_id.id)], limit=1)
                 if employee.shift_id: 
                     current_shift = employee.shift_id 
                 shift_line=self.env['hr.shift.schedule.line'].sudo().search([('employee_id','=',employee.id),('date','=',start_date),('state','=','posted')], limit=1)
@@ -294,8 +294,8 @@ class PortalAttendanceReport(models.AbstractModel):
                         if shift_line.rest_day==True:
                             rest_day_count -=1
                 working_hours = 0
-                exist_attendances=self.env['hr.attendance'].search([('employee_id','=',employee.id),('att_date','=',start_date)])
-                leaves = self.env['hr.leave'].search([('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','in',('confirm','validate'))])
+                exist_attendances=self.env['hr.attendance'].sudo().search([('employee_id','=',employee.id),('att_date','=',start_date)])
+                leaves = self.env['hr.leave'].sudo().search([('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','in',('confirm','validate'))])
                 check_in_time = ''
                 check_out_time = ''
                 leave_number_of_days = 0
@@ -306,7 +306,7 @@ class PortalAttendanceReport(models.AbstractModel):
                     elif leave_day.state=='confirm':
                         leave_status = 'confirm'  
                     leave_number_of_days += leave_day.number_of_days                          
-                rectification = self.env['hr.attendance.rectification'].search([('employee_id','=',employee.id),('check_in','<=', start_date),('check_out','>=', start_date),('state','in',('submitted','approved'))], limit=1)
+                rectification = self.env['hr.attendance.rectification'].sudo().search([('employee_id','=',employee.id),('check_in','<=', start_date),('check_out','>=', start_date),('state','in',('submitted','approved'))], limit=1)
                 for attendee in exist_attendances:
                     check_in_time = attendee.check_in
                     check_out_time = attendee.check_out    
@@ -315,7 +315,7 @@ class PortalAttendanceReport(models.AbstractModel):
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
                     working_hours += attendee.worked_hours
-                if   (working_hours > (current_shift.hours_per_day-1.5)):
+                if   (working_hours >= (current_shift.hours_per_day-1.6)):
                     remarks = 'Attendance Present'
                     attendance_day_count += 1
                     absent = '0'

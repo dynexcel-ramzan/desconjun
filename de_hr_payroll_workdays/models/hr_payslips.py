@@ -229,11 +229,13 @@ class HrPayslips(models.Model):
             elif not payslip.worked_days_line_ids:
                 payslip.worked_days_line_ids = work_day_line
             if  payslip.employee_id.date:
-                if str(payslip.employee_id.date) > str(payslip.date_from)  and str(payslip.employee_id.date) < str(payslip.date_to):
-                    month_ext_days = self.env['fiscal.year.month'].search([('id','=',payslip.date_to.month)], limit=1).days
-                    delta_days = ((payslip.date_to.replace(day=int(month_ext_days)) - payslip.employee_id.date)).days + 1 
-                    if delta_days > month_ext_days:
-                        delta_days = month_ext_days 
+                date_from_joiner = payslip.date_to.replace(day=1)
+                month_ext_days = self.env['fiscal.year.month'].search([('id','=',payslip.date_to.month)], limit=1).days
+                date_to_joiner = payslip.date_to.replace(day=month_ext_days)
+                if str(payslip.employee_id.date) > str(date_from_joiner)  and str(payslip.employee_id.date) < str(date_to_joiner):
+                    delta_days = 0
+                    tot_day_unpaid = 0
+                    delta_days = ((date_to_joiner - payslip.employee_id.date)).days + 1 
                     tot_day_unpaid = payslip.fiscal_month.days - delta_days
                     days = 0
                     for workday in payslip.worked_days_line_ids:
@@ -248,5 +250,4 @@ class HrPayslips(models.Model):
                             workday.update({
                               'number_of_days': delta_days
                             })
-
-    
+                
