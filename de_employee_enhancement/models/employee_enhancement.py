@@ -49,7 +49,7 @@ class EmployeeEnhancement(models.Model):
         return self._search(args, limit=limit, access_rights_uid=name_get_uid)
 
 
-    emp_number = fields.Char('Employee Number', required=True)
+    emp_number = fields.Char('Employee Number', default='New')
     dept_manager_id = fields.Many2one('hr.employee', string='Dept Manager')
     emp_status = fields.Char('Employee Status')
     emp_type = fields.Selection([
@@ -109,6 +109,10 @@ class EmployeeEnhancement(models.Model):
             user = self.env['res.users'].browse(vals['user_id'])
             vals.update(self._sync_user(user, vals.get('image_1920') == self._default_image()))
             vals['name'] = vals.get('name', user.name)
+            
+        vals['emp_number'] = self.env['ir.sequence'].get('hr.employee.number') or ' '
+        vals['barcode'] = self.env['ir.sequence'].get('hr.employee.barcode') or ' '
+            
         employee = super(EmployeeEnhancement, self).create(vals)
         url = '/web#%s' % url_encode({
             'action': 'hr.plan_wizard_action',
